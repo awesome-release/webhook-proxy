@@ -1,25 +1,28 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+app.use(bodyParser.json());
+
 const proxy = createProxyMiddleware({
-  target: "http://www.example.org",
-  changeOrigin: true, // needed for virtual hosted sites
-  router: {
-    "integration.localhost:3000": "http://localhost:3000/test",
+  router: function (req) {
+    // TODO: Prase the Environment Ingress URL
+    console.log(req?.body);
+    return req?.body?.url || "http://localhost:3000/test";
   },
+  changeOrigin: true,
 });
 
-app.use("/api", proxy);
+app.use("/", proxy);
 
 app.use("/test", (req, res) => {
-  const { body } = res;
-  res.json(body);
+  res.send("hello world");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Webhook proxy listening on port ${PORT}`);
 });
