@@ -16,9 +16,9 @@ const proxy = createProxyMiddleware({
   changeOrigin: true,
 });
 
-app.use('/', proxy);
+app.use('/api', proxy);
 
-app.use('/test', (req, res) => {
+app.use('/', (req, res) => {
   res.send('hello world');
 });
 
