@@ -4,6 +4,5 @@ services:
   proxy:
     build:
       context: .
-    command: npm run dev
     ports:
       - "3000:3000"
