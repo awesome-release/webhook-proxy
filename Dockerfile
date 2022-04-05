@@ -1,7 +1,7 @@
-FROM node:16-alpine
+FROM node:17.8-bullseye-slim
 
 # update packages
-RUN apk update
+RUN apt update
 
 # create root application folder
 WORKDIR /app
